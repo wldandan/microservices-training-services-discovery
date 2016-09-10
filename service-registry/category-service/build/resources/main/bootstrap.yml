@@ -1,0 +1,5 @@
+# Depending on which profile is active, the application gives
+# itself a different name when registering with Eureka
+spring:
+  application:
+    name: category

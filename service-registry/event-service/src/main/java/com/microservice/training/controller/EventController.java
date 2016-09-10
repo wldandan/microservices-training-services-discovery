@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.util.List;
-
 
 @RestController
 public class EventController {
@@ -21,11 +18,14 @@ public class EventController {
     @Autowired
     private DiscoveryClient client;
 
+    @Autowired
+    private LoadBalancerClient loadBalancer;
+
     @RequestMapping("/instance")
     public String getInfo() {
         ServiceInstance instance = client.getLocalServiceInstance();
         logger.info("host:" + instance.getHost() + ", service_id:" + instance.getServiceId());
-        return "The Instance Info is (HOST:" + instance.getHost() + "- InstanceID" + instance.getServiceId()+")";
+        return "The Instance Info is (HOST:" + instance.getHost() + "- PORT" + instance.getPort()+")";
     }
 
     @RequestMapping("/category")
@@ -38,12 +38,11 @@ public class EventController {
     }
 
     private String getResultFromRemote(String service) {
-        List<ServiceInstance> instances = client.getInstances(service);
-        if (instances != null && instances.size() > 0){
-            URI uri = instances.get(0).getUri();
-            if (uri != null){
-                return (new RestTemplate()).getForObject(uri + "/category", String.class);
-            }
+        ServiceInstance instance = loadBalancer.choose(service);
+        if (null != instance){
+            String instanceInfo = "RemoteService Host:" + instance.getHost() + ", Port:" + instance.getPort();
+            String serviceResult = (new RestTemplate()).getForObject(instance.getUri()+"/category",String.class);
+            return serviceResult+"(" + instanceInfo + ")";
         }
         return "";
     }

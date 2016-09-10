@@ -1,0 +1,29 @@
+---
+# Items that apply to ALL profiles:
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8011/eureka/,http://localhost:8012/eureka/,http://localhost:8013/eureka/
+server:
+  port: ${PORT:${SERVER_PORT:0}}   # Select any available port if neither port nor server port are specified.
+
+---
+spring:
+  profiles: default
+category: all
+
+---
+spring:
+  profiles: production
+category: outdoor,indoor,kids,exerise
+
+---
+spring:
+  profiles: development
+server:
+category: outdoor
+    
+---
+spring:
+  profiles: test
+category: indoor
