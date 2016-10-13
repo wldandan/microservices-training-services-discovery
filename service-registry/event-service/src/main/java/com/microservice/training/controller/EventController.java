@@ -34,7 +34,7 @@ public class EventController {
         if (result==null || result.isEmpty()){
             result = "nothing from remote server";
         }
-        return String.format("The event category includes %s", result);
+        return String.format("The event category includes %s from remote server", result);
     }
 
     private String getResultFromRemote(String service) {
