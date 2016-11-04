@@ -1,6 +1,7 @@
 package com.microservice.training.controller;
 
-import com.microservice.training.client.CategoryClient;
+import com.microservice.training.gateway.ReviewService;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -18,19 +19,23 @@ public class EventController {
     private DiscoveryClient client;
 
     @Autowired
-    private CategoryClient categoryClient;
+    private ReviewService reviewService;
 
 
     @RequestMapping("/instance")
     public String getInfo() {
         ServiceInstance instance = client.getLocalServiceInstance();
-        logger.info("host:" + instance.getHost() + ", service_id:" + instance.getServiceId());
-        return "The Instance Info is (HOST:" + instance.getHost() + "- PORT" + instance.getPort()+")";
+        return "[Host:" + instance.getHost() + " - Port:" + instance.getPort()+"]";
     }
 
-    @RequestMapping("/category")
-    public String getCategory() {
-        logger.info("Request category-service by using Feign Client");
-        return String.format("The event category includes %s (by Feign Client)", categoryClient.getCategory());
+    @RequestMapping("/reviews")
+    public String getReviews() {
+        logger.info("Request review-service by using Feign Client");
+
+        try {
+            return String.format("%s (by Feign Client)", reviewService.getReviews());
+        } catch(HystrixRuntimeException ex) {
+            return String.format("Service is not available['%s']",ex.getLocalizedMessage());
+        }
     }
 }
