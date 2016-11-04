@@ -16,33 +16,32 @@ import java.util.List;
 @RestController
 public class EventController {
 
-    private final Logger logger = Logger.getLogger(getClass());
-
     @Autowired
     private DiscoveryClient client;
 
     @RequestMapping("/instance")
     public String getInfo() {
         ServiceInstance instance = client.getLocalServiceInstance();
-        logger.info("host:" + instance.getHost() + ", service_id:" + instance.getServiceId());
-        return "The Instance Info is (HOST:" + instance.getHost() + "- InstanceID" + instance.getServiceId()+")";
+        return "[Host:" + instance.getHost() + " - Port:" + instance.getPort()+"]";
     }
 
-    @RequestMapping("/category")
+    @RequestMapping("/reviews")
     public String getCategory() {
-        String result = getResultFromRemote("CATEGORY");
-        if (result==null || result.isEmpty()){
-            result = "nothing from remote server";
+        String result = getResultFromRemote("REVIEW");
+        if (result == null || result.isEmpty()){
+            return "can not get reviews from review service";
         }
-        return String.format("The event category includes %s from remote server", result);
+        return result;
     }
 
     private String getResultFromRemote(String service) {
         List<ServiceInstance> instances = client.getInstances(service);
         if (instances != null && instances.size() > 0){
-            URI uri = instances.get(0).getUri();
+            ServiceInstance instance = instances.get(0);
+            URI uri = instance.getUri();
             if (uri != null){
-                return (new RestTemplate()).getForObject(uri + "/category", String.class);
+                String originResult = (new RestTemplate()).getForObject(uri + "/reviews", String.class);
+                return String.format("%s [from %s:%s]", originResult, instance.getHost(),instance.getPort());
             }
         }
         return "";

@@ -3,9 +3,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8010/eureka/,http://localhost:8011/eureka/,http://localhost:8012/eureka/
-
 server:
-  port: ${PORT:${SERVER_PORT:9000}}   # Select any available port if neither port nor server port are specified.
+  port: ${PORT:${SERVER_PORT:9010}}   # Select any available port if neither port nor server port are specified.
 
 ---
 spring:

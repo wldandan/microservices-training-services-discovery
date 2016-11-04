@@ -14,13 +14,10 @@ import java.util.List;
 
 
 @RestController
-public class CategoryController {
+public class ReviewController {
 
-    @Value("${category}")
-    String category;
-
-    @RequestMapping("/category")
+    @RequestMapping("/reviews")
     public String getCategory() {
-        return category;
+        return "The event reviews is pretty good";
     }
 }
