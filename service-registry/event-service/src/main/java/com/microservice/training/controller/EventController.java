@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.util.List;
+
 
 @RestController
 public class EventController {
-
-    private final Logger logger = Logger.getLogger(getClass());
 
     @Autowired
     private DiscoveryClient client;
@@ -24,25 +25,24 @@ public class EventController {
     @RequestMapping("/instance")
     public String getInfo() {
         ServiceInstance instance = client.getLocalServiceInstance();
-        logger.info("host:" + instance.getHost() + ", service_id:" + instance.getServiceId());
-        return "The Instance Info is (HOST:" + instance.getHost() + "- PORT" + instance.getPort()+")";
+        return "[Host:" + instance.getHost() + " - Port:" + instance.getPort()+"]";
     }
 
-    @RequestMapping("/category")
+    @RequestMapping("/reviews")
     public String getCategory() {
-        String result = getResultFromRemote("CATEGORY");
-        if (result==null || result.isEmpty()){
-            result = "nothing from remote server";
+        String result = getResultFromRemote("REVIEW");
+        if (result == null || result.isEmpty()){
+            return "can not get reviews from review service";
         }
-        return String.format("The event category includes %s", result);
+        return result;
     }
 
     private String getResultFromRemote(String service) {
         ServiceInstance instance = loadBalancer.choose(service);
-        if (null != instance){
-            String instanceInfo = "RemoteService Host:" + instance.getHost() + ", Port:" + instance.getPort();
-            String serviceResult = (new RestTemplate()).getForObject(instance.getUri()+"/category",String.class);
-            return serviceResult+"(" + instanceInfo + ")";
+        URI uri = instance.getUri();
+        if (uri != null){
+            String originResult = (new RestTemplate()).getForObject(uri + "/reviews", String.class);
+            return String.format("%s [from %s:%s]", originResult, instance.getHost(),instance.getPort());
         }
         return "";
     }

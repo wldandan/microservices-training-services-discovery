@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.3.5.RELEASE'
+		springBootVersion = '1.4.1.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -16,8 +16,8 @@ apply plugin: 'spring-boot'
 apply plugin: 'idea'
 
 jar {
-	baseName = 'category-service'
-	version = '0.0.1-SNAPSHOT'
+	baseName = 'review-service'
+	version = '0.0.1'
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -28,14 +28,13 @@ repositories {
 
 
 dependencies {
-	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+	compile("org.springframework.boot:spring-boot-starter-web")
 	compile('org.springframework.cloud:spring-cloud-starter-eureka')
-	compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
-	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+	compile("org.springframework.boot:spring-boot-starter-actuator")
 }
 
 dependencyManagement {
 	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.SR1"
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.SR6"
 	}
 }
