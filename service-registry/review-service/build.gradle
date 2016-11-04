@@ -16,8 +16,8 @@ apply plugin: 'spring-boot'
 apply plugin: 'idea'
 
 jar {
-	baseName = 'category-service'
-	version = '0.0.1-SNAPSHOT'
+	baseName = 'review-service'
+	version = '0.0.1'
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
