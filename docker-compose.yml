@@ -25,3 +25,13 @@ services:
       - "9010:9010"
     depends_on:
       - eureka-server
+  review-service-1:
+    build: service-registry/review-service
+    command: bash -c "wait-for-it eureka-server:8010 && java -jar /app/review-service-latest.jar"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 9011
+    ports:
+      - "9011:9011"
+    depends_on:
+      - eureka-server
