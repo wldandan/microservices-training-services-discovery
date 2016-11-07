@@ -29,7 +29,7 @@ public class EventController {
     }
 
     @RequestMapping("/reviews")
-    public String getCategory() {
+    public String getReviews() {
         String result = getResultFromRemote("REVIEW");
         if (result == null || result.isEmpty()){
             return "can not get reviews from review service";
