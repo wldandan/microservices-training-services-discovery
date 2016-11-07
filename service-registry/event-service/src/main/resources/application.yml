@@ -2,6 +2,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8010/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 5
 
 server:
   port: ${PORT:${SERVER_PORT:9000}}
