@@ -32,13 +32,18 @@ public class EventController {
     public String getReviews() {
         String result = getResultFromRemote("REVIEW");
         if (result == null || result.isEmpty()){
-            return "can not get reviews from review service";
+            return "can not get reviews[ Review Server is not available ]";
         }
         return result;
     }
 
     private String getResultFromRemote(String service) {
         ServiceInstance instance = loadBalancer.choose(service);
+
+        if (instance == null){
+            return null;
+        }
+
         URI uri = instance.getUri();
         if (uri != null){
             String originResult = (new RestTemplate()).getForObject(uri + "/reviews", String.class);
