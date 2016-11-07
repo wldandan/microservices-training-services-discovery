@@ -1,9 +1,11 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8010/eureka/,http://localhost:8011/eureka/,http://localhost:8012/eureka/
+      defaultZone: http://localhost:8010/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 5
 server:
-  port: ${PORT:${SERVER_PORT:9010}}   # Select any available port if neither port nor server port are specified.
+  port: ${PORT:${SERVER_PORT:9010}}
 
 ---
 spring:
@@ -13,3 +15,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka-server:8010/eureka/
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}

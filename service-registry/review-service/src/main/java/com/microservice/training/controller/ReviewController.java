@@ -17,7 +17,7 @@ import java.util.List;
 public class ReviewController {
 
     @RequestMapping("/reviews")
-    public String getCategory() {
+    public String getReview() {
         return "The event reviews is pretty good";
     }
 }
