@@ -8,7 +8,7 @@ services:
     ports:
       - "8010:8010"
   event-service:
-    build: service-registry/event-service
+    build: event-service
     command: bash -c "wait-for-it eureka-server:8010 && java -jar /app/event-service-latest.jar"
     environment:
       SPRING_PROFILES_ACTIVE: docker
@@ -17,7 +17,7 @@ services:
     depends_on:
       - eureka-server
   review-service:
-    build: service-registry/review-service
+    build: review-service
     command: bash -c "wait-for-it eureka-server:8010 && java -jar /app/review-service-latest.jar"
     environment:
       SPRING_PROFILES_ACTIVE: docker
@@ -26,7 +26,7 @@ services:
     depends_on:
       - eureka-server
   review-service-1:
-    build: service-registry/review-service
+    build: review-service
     command: bash -c "wait-for-it eureka-server:8010 && java -jar /app/review-service-latest.jar"
     environment:
       SPRING_PROFILES_ACTIVE: docker
