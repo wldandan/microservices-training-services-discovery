@@ -27,7 +27,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://eureka-secondary:8012/eureka/,http://eureka-tertiary:8013/eureka/
+      defaultZone: http://eureka-secondary:8011/eureka/,http://eureka-tertiary:8012/eureka/
 
 ---
 spring:
@@ -43,7 +43,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://eureka-tertiary:8013/eureka/,http://eureka-primary:8011/eureka/
+      defaultZone: http://eureka-tertiary:8012/eureka/,http://eureka-primary:8010/eureka/
 
 ---
 spring:
@@ -59,4 +59,4 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://eureka-primary:8011/eureka/,http://eureka-secondary:8012/eureka/      
+      defaultZone: http://eureka-primary:8010/eureka/,http://eureka-secondary:8011/eureka/      
